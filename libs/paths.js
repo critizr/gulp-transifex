@@ -5,34 +5,26 @@ sprintf = require('sprintf');
 
 util = require('util');
 
-module.exports = function(options) {
+module.exports = function (options) {
   options = util._extend({}, options || {});
   return {
     base_path: options.base_path || '/api/2/project/',
     host: options.host || 'www.transifex.com',
     local_path: options.local_path || 'locale',
-    get_languages: function() {
-      return sprintf(this.base_path + '%(project)s/languages/', {
-        project: options.project
-      });
+    get_languages: function (vars) {
+      return sprintf(this.base_path + '%(project)s/resource/%(resource)s/stats/', vars);
     },
-    get_or_create_resources: function() {
+    get_or_create_resources: function () {
       return sprintf(this.base_path + '%(project)s/resources/', {
         project: options.project
       });
     },
-    get_or_create_translation: function(vars) {
-      var path = sprintf(this.base_path + '%(project)s/resource/%(resource)s/translation/%(language)s/', util._extend({
-        project: options.project,
+    get_or_create_translation: function (vars) {
+      return sprintf(this.base_path + '%(project)s/resource/%(resource)s/translation/%(language)s/', util._extend({
+        project: options.project
       }, vars));
-
-      if (vars.translation_mode) {
-        path += '?mode=' + vars.translation_mode;
-      }
-
-      return path;
     },
-    local_translations_path: function(vars) {
+    local_translations_path: function (vars) {
       return sprintf('%(local_path)s/%(language)s/', util._extend({
         local_path: options.local_path
       }, vars));
@@ -40,7 +32,7 @@ module.exports = function(options) {
     get_resource: function (vars) {
       return sprintf(this.base_path + '%(project)s/resource/%(resource)s/?details', vars);
     },
-    update_resource: function(vars) {
+    update_resource: function (vars) {
       return sprintf(this.base_path + '%(project)s/resource/%(resource)s/content/', util._extend({
         project: options.project
       }, vars));
