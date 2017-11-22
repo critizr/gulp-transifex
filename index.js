@@ -117,11 +117,12 @@ module.exports = {
             cb(null, {remoteDate: remoteDate, newFile: newFile});
           });
         }, function (cb) {
-          if (!file.isNull()) {
-            localDate = file.stat.mtime;
-          }
-          returnValue = localDate > remoteDate;
-          cb(null, returnValue || newFile);
+          //if (!file.isNull()) {
+          //  localDate = file.stat.mtime;
+          //}
+          //returnValue = localDate > remoteDate;
+          //cb(null, returnValue || newFile);
+          cb(null, true);
         }
       ], function (err, results) {
         callback(results[1]);
